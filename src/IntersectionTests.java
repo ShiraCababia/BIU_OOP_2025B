@@ -17,7 +17,7 @@ public class IntersectionTests {
         Line line3 = new Line(0, 0, 20, 20);
         Line line4 = new Line(0, 20, 20, 0);
         drawTestCase(surface, line3, line4, "Diagonal", 40);
-        // Test Case 3: Endpoint intersection at (10,20)////////////////////////////////////////
+        // Test Case 3: Endpoint intersection at (10,20)
         Line line5 = new Line(5, 20, 10, 20);
         Line line6 = new Line(10, 20, 15, 20);
         drawTestCase(surface, line5, line6, "Endpoint", 70);

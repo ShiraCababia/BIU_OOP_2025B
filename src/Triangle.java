@@ -13,7 +13,7 @@ class Triangle {
     }
 
     public void drawOn(DrawSurface d) {
-        d.setColor(Color.MAGENTA);
+        d.setColor(Color.GREEN);
         d.drawLine((int) p1.getX(), (int) p1.getY(), (int) p2.getX(), (int) p2.getY());
         d.drawLine((int) p2.getX(), (int) p2.getY(), (int) p3.getX(), (int) p3.getY());
         d.drawLine((int) p3.getX(), (int) p3.getY(), (int) p1.getX(), (int) p1.getY());

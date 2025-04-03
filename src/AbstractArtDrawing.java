@@ -41,12 +41,8 @@ public class AbstractArtDrawing {
                     Point intersectB = drawnLines[j].intersectionWith(drawnLines[k]);
                     Point intersectC = drawnLines[k].intersectionWith(drawnLines[i]);
                     if (intersectA != null && intersectB != null && intersectC != null) {
-                        Line lineA = new Line(intersectA, intersectB);
-                        Line lineB = new Line(intersectB, intersectC);
-                        Line lineC = new Line(intersectC, intersectA);
-                        lineA.drawLineForTriangle(d);
-                        lineB.drawLineForTriangle(d);
-                        lineC.drawLineForTriangle(d);
+                        Triangle trngle = new Triangle(intersectA, intersectB, intersectC);
+                        trngle.drawOn(d);
                     }
                 }
             }
