@@ -9,7 +9,6 @@ public class DrawShapes {
         GUI gui = new GUI("Shapes Example", 500, 500);
         DrawSurface d = gui.getDrawSurface();
 
-
         // Create and draw random shapes
         new Point(250, 250).drawOn(d); // Draw center point
         new Line(new Point(100, 100), new Point(400, 400)).drawOn(d); // Diagonal line
