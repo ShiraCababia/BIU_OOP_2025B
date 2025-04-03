@@ -1,12 +1,10 @@
 import biuoop.GUI;
 import biuoop.DrawSurface;
 import java.util.Random;
-import java.awt.Color;
 
 public class AbstractArtDrawing {
 
     private static final int MAX_LINES = 10;
-    private static final int RADIUS_POINT = 3;
 
     public void drawRandomShapes() {
         Random rand = new Random(); // create a random-number generator

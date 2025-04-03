@@ -166,7 +166,7 @@ public class Line {
         double pointSlope = (point.getY() - start.getY()) / (point.getX() - start.getX());
         // If the slopes match (with a small margin for floating point precision), the
         // point is on the line.
-        return Math.abs(slope - pointSlope) < 0.000001;
+        return Math.abs(slope - pointSlope) < 0.00001;
     }
 
     // Method to draw the line on the surface

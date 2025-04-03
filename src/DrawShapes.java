@@ -1,8 +1,6 @@
 import biuoop.DrawSurface;
 import biuoop.GUI;
 
-import java.util.Random;
-
 // Main Class
 public class DrawShapes {
     public void drawShapes() {

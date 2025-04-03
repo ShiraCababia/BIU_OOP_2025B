@@ -1,7 +1,7 @@
 import biuoop.DrawSurface;
 import biuoop.GUI;
 
-import java.awt.Color;
+// import java.awt.Color;
 
 public class UsingPointAndLine {
     public void drawShapes() {
