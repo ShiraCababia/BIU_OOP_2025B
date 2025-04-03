@@ -8,13 +8,13 @@ public class AbstractArtDrawing {
 
     public void drawRandomShapes() {
         Random rand = new Random(); // create a random-number generator
-        GUI gui = new GUI("Random Circles Example", 400, 300);
+        GUI gui = new GUI("Random Circles Example", 800, 600);
         DrawSurface d = gui.getDrawSurface();
         Line[] drawnLines = new Line[MAX_LINES];
         for (int i = 0; i < MAX_LINES; ++i) {
             // Creating the relevant shapes
-            Point p1 = new Point((rand.nextInt(400) + 1), (rand.nextInt(300) + 1));
-            Point p2 = new Point((rand.nextInt(400) + 1), (rand.nextInt(300) + 1));
+            Point p1 = new Point((rand.nextInt(800) + 1), (rand.nextInt(600) + 1));
+            Point p2 = new Point((rand.nextInt(800) + 1), (rand.nextInt(600) + 1));
             Line newLine = new Line(p1, p2);
             drawnLines[i] = newLine;
             // Drawing

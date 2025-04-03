@@ -175,11 +175,4 @@ public class Line {
         d.drawLine((int) start.getX(), (int) start.getY(),
                 (int) end.getX(), (int) end.getY());
     }
-
-    // Method to draw the line for a triangle in green
-    public void drawLineForTriangle(DrawSurface d) {
-        d.setColor(Color.GREEN);
-        d.drawLine((int) start.getX(), (int) start.getY(),
-                (int) end.getX(), (int) end.getY());
-    }
 }
