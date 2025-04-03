@@ -3,7 +3,6 @@ import biuoop.DrawSurface;
 import java.awt.Color;
 import java.util.Random;
 
-// The Point class represents a point in a 2D space.
 public class Point {
     private double x;
     private double y;
@@ -34,21 +33,21 @@ public class Point {
         return (this.x == other.x) && (this.y == other.y);
     }
 
-    //
+    // Method to draw a small blue circle representing the middle point
     public void drawMiddlePoint(DrawSurface d) {
         d.setColor(Color.BLUE);
         d.fillCircle((int) x, (int) y, 3); // Draw a small circle to represent the point
     }
 
-    //
+    // Method to draw a small red circle representing the intersection point
     public void drawIntersectionPoint(DrawSurface d) {
         d.setColor(Color.RED);
         d.fillCircle((int) x, (int) y, 3); // Draw a small circle to represent the point
     }
 
+    // Method to draw a small black circle representing a point on the surface
     public void drawOn(DrawSurface d) {
         d.setColor(Color.BLACK);
         d.fillCircle((int) x, (int) y, 3);
     }
-
 }

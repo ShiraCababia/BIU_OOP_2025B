@@ -6,36 +6,39 @@ public class Line {
 
     private Point start;
     private Point end;
-    private boolean isHorizontal;
     private boolean isVertical;
     private Double slope;
-    private Double yIntercept;
+    // Fields that maybe will be used next assignment, so I don't delete them yet:
+    // private boolean isHorizontal;
+    // private Double yIntercept;
 
+    // Constructor that takes two Points (start and end) to define the line
     public Line(Point start, Point end) {
         this.start = start;
         this.end = end;
-        this.isHorizontal = start.getY() == end.getY();
         this.isVertical = start.getX() == end.getX();
         this.slope = isVertical ? null : (end.getY() - start.getY()) / (end.getX() - start.getX());
-        this.yIntercept = isVertical ? null : start.getY() - slope * start.getX();
+        // this.isHorizontal = start.getY() == end.getY();
+        // this.yIntercept = isVertical ? null : start.getY() - slope * start.getX();
     }
 
+    // Constructor that takes four double values (x1, y1, x2, y2) to define the line
     public Line(double x1, double y1, double x2, double y2) {
         this.start = new Point(x1, y1);
         this.end = new Point(x2, y2);
-        this.isHorizontal = start.getY() == end.getY();
         this.isVertical = start.getX() == end.getX();
         this.slope = isVertical ? null : (end.getY() - start.getY()) / (end.getX() - start.getX());
-        this.yIntercept = isVertical ? null : start.getY() - slope * start.getX();
+        // this.isHorizontal = start.getY() == end.getY();
+        // this.yIntercept = isVertical ? null : start.getY() - slope * start.getX();
     }
 
-    // Return the length of the line
+    // Returns the length of the line using the distance formula
     public double length() {
-        return Math.sqrt((this.start.getX() - this.end.getX()) * (this.start.getX() - this.end.getX()) +
-                (this.start.getY() - this.end.getY()) * (this.start.getY() - this.end.getY()));
+        return start.distance(end);
     }
 
-    // Returns the middle point of the line
+    // Returns the middle point of the line by averaging the x and y coordinates of
+    // the start and end points
     public Point middle() {
         Point middle = new Point((this.start.getX() + this.end.getX()) / 2, (this.start.getY() + this.end.getY()) / 2);
         return middle;
@@ -51,19 +54,19 @@ public class Line {
         return this.end;
     }
 
+    // Checks if this line intersects with another line
     public boolean isIntersecting(Line other) {
         Point intersection = intersectionWith(other);
-        // return intersection != null && isPointOnLine(intersection) &&
-        // other.isPointOnLine(intersection);
-        // If there's one intersection point only.
+        // If there's one intersection point, return true
         if (intersection != null) {
             return true;
         }
-        // Check if there isn't intersection at all or that the lines are Collinear And
-        // Overlapping
+        // Check if the lines are collinear and overlapping, if they are meaning they
+        // intersecting so return true, otherwise false
         return this.isCollinearAndOverlapping(other);
     }
 
+    // Helper method to check if two lines are collinear and overlapping
     private boolean isCollinearAndOverlapping(Line other) {
         if (this.slope != null && this.slope.equals(other.slope)) {
             return Math.max(this.start.getX(), this.end.getX()) >= Math.min(other.start.getX(), other.end.getX()) &&
@@ -74,11 +77,13 @@ public class Line {
         return false;
     }
 
-    // Returns true if this 2 lines intersect with this line, false otherwise
+    // Checks if this line intersects with two other lines
     public boolean isIntersecting(Line other1, Line other2) {
         return this.isIntersecting(other1) && this.isIntersecting(other2);
     }
 
+    // Computes the intersection point of this line with another line using Cramer's
+    // rule
     public Point intersectionWith(Line other) {
         double p1StartX = this.start.getX(), p1StartY = this.start.getY();
         double p1EndX = this.end.getX(), p1EndY = this.end.getY();
@@ -128,12 +133,13 @@ public class Line {
         return null;
     }
 
-    // Equals -- Returns true if the lines are equal, false otherwise
+    // Equals - Returns true if the lines are equal, false otherwise
     public boolean equals(Line other) {
         return (this.start.equals(other.start) && this.end.equals(other.end)) ||
                 (this.start.equals(other.end) && this.end.equals(other.start));
     }
 
+    // Helper method to check if a point lies on the line segment
     private boolean isPointOnLine(Point point) {
         // Calculate the boundaries of the line (minimum and maximum X and Y values)
         double minX = Math.min(start.getX(), end.getX());
@@ -163,12 +169,14 @@ public class Line {
         return Math.abs(slope - pointSlope) < 0.000001;
     }
 
+    // Method to draw the line on the surface
     public void drawOn(DrawSurface d) {
         d.setColor(Color.BLACK);
         d.drawLine((int) start.getX(), (int) start.getY(),
                 (int) end.getX(), (int) end.getY());
     }
 
+    // Method to draw the line for a triangle in green
     public void drawLineForTriangle(DrawSurface d) {
         d.setColor(Color.GREEN);
         d.drawLine((int) start.getX(), (int) start.getY(),
