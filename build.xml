@@ -51,6 +51,12 @@
         </java>
     </target>
 
+    <target name="runMultipleBouncing" depends="compile" >
+        <java classname="MultipleBouncingBallsAnimation" classpath="${classpath}" fork="true">
+        <arg line="${args}"/>
+        </java>
+    </target>
+
     <!-- Run checkstyle on all our source files -->
     <target name="check">
         <java jar="checkstyle-8.44-all.jar" fork="true">

@@ -10,6 +10,9 @@ public class Ball {
     private java.awt.Color color;
     private Velocity velocity;
 
+    final int WIDTH = 800;
+    final int HEIGHT = 600;
+
     // constructor
     public Ball(Point center, int r, java.awt.Color color) {
         this.centerP = center;
@@ -63,29 +66,29 @@ public class Ball {
         if (this.velocity != null) {
             double nextX = this.centerP.getX() + this.velocity.getDx();
             double nextY = this.centerP.getY() + this.velocity.getDy();
-            // 
-            if (nextX - size < 0 || nextX + size > 800) {
+            //
+            if (nextX - size < 0 || nextX + size > WIDTH) {
                 this.velocity = new Velocity(-this.velocity.getDx(), this.velocity.getDy());
                 if (nextX - size < 0) {
                     nextX = size;
                 }
-                if (nextX + size > 800) {
-                    nextX = 800 - size;
+                if (nextX + size > WIDTH) {
+                    nextX = WIDTH - size;
                 }
             }
-            // 
-            if (nextY - size < 0 || nextY + size > 600) {
+            //
+            if (nextY - size < 0 || nextY + size > HEIGHT) {
                 this.velocity = new Velocity(this.velocity.getDx(), -this.velocity.getDy());
                 if (nextY - size < 0) {
                     nextY = size;
                 }
-                if (nextY + size > 600) {
-                    nextY = 600 - size;
+                if (nextY + size > HEIGHT) {
+                    nextY = HEIGHT - size;
                 }
             }
-            // 
+            //
             // this.centerP = this.velocity.applyToPoint(this.centerP);
-            this.centerP = new Point (nextX, nextY);
+            this.centerP = new Point(nextX, nextY);
         }
     }
 
