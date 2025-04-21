@@ -20,17 +20,35 @@
         <delete dir="bin"/>
     </target>
 
-    <!--    This target is for your convenience; we will not grade it. -->
-    <target name="run-gui-example" depends="compile" >
-        <java classname="SimpleGuiExample" classpath="${classpath}" fork="true"/>
-    </target>
-
     <target name="run2" depends="compile" >
-        <java classname="AbstractArtDrawing" classpath="${classpath}" fork="true"/>
+        <java classname="BouncingBallAnimation" classpath="${classpath}" fork="true">
+            <!-- This specifies to pass the arguments from the `ant` command into the `java` execution command -->
+            <arg line="${args}"/>
+        </java>
     </target>
 
     <target name="run3" depends="compile" >
-        <java classname="IntersectionTests" classpath="${classpath}" fork="true"/>
+        <java classname="MultipleBouncingBallsAnimation" classpath="${classpath}" fork="true">
+            <!-- This specifies to pass the arguments from the `ant` command into the `java` execution command -->
+            <arg line="${args}"/>
+        </java>
+    </target>
+
+    <target name="run4" depends="compile" >
+        <java classname="MultipleFramesBouncingBallsAnimation" classpath="${classpath}" fork="true">
+            <!-- This specifies to pass the arguments from the `ant` command into the `java` execution command -->
+            <arg line="${args}"/>
+        </java>
+    </target>
+
+    <target name="runBallsTest1" depends="compile" >
+        <java classname="BallsTest1" classpath="${classpath}" fork="true"/>
+    </target>
+
+    <target name="runBouncingBalls" depends="compile" >
+        <java classname="BouncingBallAnimation" classpath="${classpath}" fork="true">
+        <arg line="${args}"/>
+        </java>
     </target>
 
     <!-- Run checkstyle on all our source files -->
