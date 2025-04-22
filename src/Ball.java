@@ -9,15 +9,20 @@ public class Ball {
     private int size;
     private java.awt.Color color;
     private Velocity velocity;
+    private double minX, minY, maxX, maxY;
 
-    final int WIDTH = 800;
-    final int HEIGHT = 600;
+    final int WIDTH = 800; //X
+    final int HEIGHT = 600; //Y
 
     // constructor
     public Ball(Point center, int r, java.awt.Color color) {
         this.centerP = center;
         this.size = r;
         this.color = color;
+        this.minX = 0;
+        this.minY = 0;
+        this.maxX = WIDTH;
+        this.maxY = HEIGHT;
     }
 
     // constructor for X,Y instead of Point-Object
@@ -62,28 +67,35 @@ public class Ball {
         this.velocity = new Velocity(dx, dy);
     }
 
+    public void setFrame(double minX, double minY, double maxX, double maxY) {
+        this.minX = minX;
+        this.minY = minY;
+        this.maxX = maxX;
+        this.maxY = maxY;
+    }
+
     public void moveOneStep() {
         if (this.velocity != null) {
             double nextX = this.centerP.getX() + this.velocity.getDx();
             double nextY = this.centerP.getY() + this.velocity.getDy();
             //
-            if (nextX - size < 0 || nextX + size > WIDTH) {
+            if (nextX - size < minX || nextX + size > maxX) {
                 this.velocity = new Velocity(-this.velocity.getDx(), this.velocity.getDy());
-                if (nextX - size < 0) {
-                    nextX = size;
+                if (nextX - size < minX) {
+                    nextX = size + minX;
                 }
-                if (nextX + size > WIDTH) {
-                    nextX = WIDTH - size;
+                if (nextX + size > maxX) {
+                    nextX = maxX - size;
                 }
             }
             //
-            if (nextY - size < 0 || nextY + size > HEIGHT) {
+            if (nextY - size < minY || nextY + size > maxY) {
                 this.velocity = new Velocity(this.velocity.getDx(), -this.velocity.getDy());
-                if (nextY - size < 0) {
-                    nextY = size;
+                if (nextY - size < minY) {
+                    nextY = size + minY;
                 }
-                if (nextY + size > HEIGHT) {
-                    nextY = HEIGHT - size;
+                if (nextY + size > maxY) {
+                    nextY = maxY - size;
                 }
             }
             //

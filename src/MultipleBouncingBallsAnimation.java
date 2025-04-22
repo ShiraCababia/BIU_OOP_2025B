@@ -11,6 +11,7 @@ public class MultipleBouncingBallsAnimation {
 
         final int WIDTH = 800;
         final int HEIGHT = 600;
+        int numBalls = args.length;
         // int defaultExtra = 0;
         // if (args.length == 0) {
         // System.out.println("No arguments given. Default implemented");
@@ -23,8 +24,8 @@ public class MultipleBouncingBallsAnimation {
         // Create one Ball per argument (considering case when no arguments given -
         // create one ball only as default)
         // + defaultExtra
-        Ball[] balls = new Ball[args.length];
-        for (int i = 0; i < args.length; i++) {
+        Ball[] balls = new Ball[numBalls];
+        for (int i = 0; i < numBalls; i++) {
             int size = Integer.parseInt(args[i]);
             // Pick a random center so that the entire ball lies inside the screen
             double x = size + rand.nextDouble() * (WIDTH - 2 * size);
@@ -33,7 +34,7 @@ public class MultipleBouncingBallsAnimation {
             Ball b = new Ball(x, y, size, color);
             // Set speed inversely proportional to ball size (smaller balls move faster),
             // but enforce a minimum speed of 1 so no ball ever remains stationary.
-            double speed = 50.0 / size;
+            double speed = 100.0 / size;
             if (speed < 1) {
                 speed = 1;
             }
