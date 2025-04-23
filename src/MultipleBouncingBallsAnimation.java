@@ -9,9 +9,11 @@ public class MultipleBouncingBallsAnimation {
 
         final int WIDTH = 800;
         final int HEIGHT = 600;
+        final int MIN_SIZE = 5;
+        final int MAX_SIZE = 140;
         int numBalls = args.length;
         boolean isDefault = false;
-        
+
         // Handling no arguments given - Default - 1 Ball is created
         if (args.length == 0 || !args[0].matches("-?\\d+") || args[0].equals("${args}")) {
             System.out.println("No arguments given. Default implemented!");
@@ -32,6 +34,13 @@ public class MultipleBouncingBallsAnimation {
                 size = Integer.parseInt(args[i]);
             } else {
                 size = Integer.parseInt("20");
+            }
+            // Clamp size to allowed range
+            if (size < MIN_SIZE) {
+                size = MIN_SIZE;
+            }
+            if (size > MAX_SIZE) {
+                size = MAX_SIZE;
             }
             // Pick a random center so that the entire ball lies inside the screen
             double x = size + rand.nextDouble() * (WIDTH - 2 * size);
