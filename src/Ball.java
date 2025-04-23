@@ -27,6 +27,10 @@ public class Ball {
         this.centerP = new Point(x, y);
         this.size = r;
         this.color = color;
+        this.minX = 0;
+        this.minY = 0;
+        this.maxX = WIDTH;
+        this.maxY = HEIGHT;
     }
 
     // Accessors

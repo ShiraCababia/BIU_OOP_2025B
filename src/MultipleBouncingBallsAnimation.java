@@ -7,26 +7,31 @@ import java.awt.Color;
 public class MultipleBouncingBallsAnimation {
     public static void main(String[] args) {
 
-        // System.out.println(" arguments given:" + args.length + " value: " + args[0]);
-
         final int WIDTH = 800;
         final int HEIGHT = 600;
         int numBalls = args.length;
-        // int defaultExtra = 0;
-        // if (args.length == 0) {
-        // System.out.println("No arguments given. Default implemented");
-        // defaultExtra = 1;
-        // }
+        boolean isDefault = false;
+        
+        if (args.length == 0 || !args[0].matches("-?\\d+") || args[0].equals("${args}")) {
+            System.out.println("No arguments given. Default implemented!");
+            numBalls = 1;
+            isDefault = true;
+        }
+
         GUI gui = new GUI("Multiple Bouncing Balls Animation", WIDTH, HEIGHT);
         Sleeper sleeper = new Sleeper();
         Random rand = new Random();
 
         // Create one Ball per argument (considering case when no arguments given -
         // create one ball only as default)
-        // + defaultExtra
         Ball[] balls = new Ball[numBalls];
         for (int i = 0; i < numBalls; i++) {
-            int size = Integer.parseInt(args[i]);
+            int size;
+            if (!isDefault) {
+                size = Integer.parseInt(args[i]);
+            } else {
+                size = Integer.parseInt("20");
+            }
             // Pick a random center so that the entire ball lies inside the screen
             double x = size + rand.nextDouble() * (WIDTH - 2 * size);
             double y = size + rand.nextDouble() * (HEIGHT - 2 * size);
