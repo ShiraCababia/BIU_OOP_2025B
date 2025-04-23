@@ -12,17 +12,30 @@ public class MultipleFramesBouncingBallsAnimation {
         final int MIN_SIZE = 5;
         final int MAX_SIZE = 140;
         int numBalls = args.length;
+        boolean isDefault = false;
 
         GUI gui = new GUI("Multiple Frames Bouncing Balls Animation", WIDTH, HEIGHT);
         Sleeper sleeper = new Sleeper();
         Random rand = new Random();
+
+        // Handling no arguments given - Default - 1 Ball is created
+        if (args.length == 0 || !args[0].matches("-?\\d+") || args[0].equals("${args}")) {
+            System.out.println("No arguments given. Default implemented!");
+            numBalls = 1;
+            isDefault = true;
+        }
 
         // Create an array to hold the balls
         Ball[] balls = new Ball[numBalls];
 
         // Initialize each ball based on input size
         for (int i = 0; i < numBalls; i++) {
-            int size = Integer.parseInt(args[i]);
+            int size;
+            if (!isDefault) {
+                size = Integer.parseInt(args[i]);
+            } else {
+                size = Integer.parseInt("20");
+            }
             // Clamp size to allowed range
             if (size < MIN_SIZE) {
                 size = MIN_SIZE;

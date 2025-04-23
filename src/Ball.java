@@ -11,7 +11,7 @@ public class Ball {
     final int WIDTH = 800; // X
     final int HEIGHT = 600; // Y
 
-    // constructor
+    // Constructor
     public Ball(Point center, int r, java.awt.Color color) {
         this.centerP = center;
         this.size = r;
@@ -22,7 +22,7 @@ public class Ball {
         this.maxY = HEIGHT;
     }
 
-    // Constructor for X,Y instead of Point-Object
+    // Constructor for given X,Y instead of Point-Object
     public Ball(double x, double y, int r, java.awt.Color color) {
         this.centerP = new Point(x, y);
         this.size = r;
@@ -62,7 +62,7 @@ public class Ball {
         this.velocity = new Velocity(dx, dy);
     }
 
-    // Draw the ball on the given DrawSurface
+    // Method to draw the ball on the given DrawSurface
     public void drawOn(DrawSurface surface) {
         surface.setColor(this.color);
         surface.fillCircle((int) this.centerP.getX(), (int) this.centerP.getY(), this.size);

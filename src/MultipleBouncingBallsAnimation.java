@@ -12,6 +12,7 @@ public class MultipleBouncingBallsAnimation {
         int numBalls = args.length;
         boolean isDefault = false;
         
+        // Handling no arguments given - Default - 1 Ball is created
         if (args.length == 0 || !args[0].matches("-?\\d+") || args[0].equals("${args}")) {
             System.out.println("No arguments given. Default implemented!");
             numBalls = 1;

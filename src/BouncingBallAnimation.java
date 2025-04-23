@@ -4,6 +4,8 @@ import biuoop.Sleeper;
 
 public class BouncingBallAnimation {
 
+    // Method to run the animation loop: moves the ball, draws it, and waits between
+    // frames.
     static private void drawAnimation(Point start, double dx, double dy) {
         GUI gui = new GUI("title", 800, 600);
         Sleeper sleeper = new Sleeper();
@@ -18,7 +20,10 @@ public class BouncingBallAnimation {
         }
     }
 
+    // Method that Receives arguments from the command line and starts the
+    // animation.
     public static void main(String[] args) {
+        // Handling not enough arguments given - Default - 1 Ball is created
         if (args.length != 4) {
             System.out.print("Not enough arguments. Default implemented!");
             drawAnimation(new Point(20, 20), 5, 5);
