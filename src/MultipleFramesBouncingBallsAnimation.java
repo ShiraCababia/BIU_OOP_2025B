@@ -11,8 +11,10 @@ public class MultipleFramesBouncingBallsAnimation {
         final int HEIGHT = 600;
         final int MIN_SIZE = 5;
         final int MAX_SIZE = 140;
+        final int MAX_BALLS = 50;
         int numBalls = args.length;
         boolean isDefault = false;
+        boolean isMessageShown = false;
 
         GUI gui = new GUI("Multiple Frames Bouncing Balls Animation", WIDTH, HEIGHT);
         Sleeper sleeper = new Sleeper();
@@ -25,7 +27,11 @@ public class MultipleFramesBouncingBallsAnimation {
             isDefault = true;
         }
 
-        // Create an array to hold the balls
+        // Create an array to hold the balls, handling too many balls
+        if (numBalls > MAX_BALLS) {
+            System.out.println("Too many arguments given (Max is " + MAX_BALLS + "). Default implemented!");
+            numBalls = MAX_BALLS;
+        }
         Ball[] balls = new Ball[numBalls];
 
         // Initialize each ball based on input size
@@ -39,9 +45,21 @@ public class MultipleFramesBouncingBallsAnimation {
             // Clamp size to allowed range
             if (size < MIN_SIZE) {
                 size = MIN_SIZE;
+                if (!isMessageShown) {
+                    System.out.println(
+                            "Unacceptable size given (range is " + MIN_SIZE + "-" + MAX_SIZE
+                                    + "). Default implemented!");
+                    isMessageShown = true;
+                }
             }
             if (size > MAX_SIZE) {
                 size = MAX_SIZE;
+                if (!isMessageShown) {
+                    System.out.println(
+                            "Unacceptable size given (range is " + MIN_SIZE + "-" + MAX_SIZE
+                                    + "). Default implemented!");
+                    isMessageShown = true;
+                }
             }
             // Calculate speed inversely proportional to size
             double speed = 100.0 / size;

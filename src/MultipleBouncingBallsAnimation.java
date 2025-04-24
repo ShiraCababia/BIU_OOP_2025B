@@ -11,8 +11,10 @@ public class MultipleBouncingBallsAnimation {
         final int HEIGHT = 600;
         final int MIN_SIZE = 5;
         final int MAX_SIZE = 140;
+        final int MAX_BALLS = 50;
         int numBalls = args.length;
         boolean isDefault = false;
+        boolean isMessageShown = false;
 
         // Handling no arguments given - Default - 1 Ball is created
         if (args.length == 0 || !args[0].matches("-?\\d+") || args[0].equals("${args}")) {
@@ -25,9 +27,13 @@ public class MultipleBouncingBallsAnimation {
         Sleeper sleeper = new Sleeper();
         Random rand = new Random();
 
-        // Create one Ball per argument (considering case when no arguments given -
-        // create one ball only as default)
+        // Create an array to hold the balls, handling too many balls
+        if (numBalls > MAX_BALLS) {
+            System.out.println("Too many arguments given (Max is " + MAX_BALLS + "). Default implemented!");
+            numBalls = MAX_BALLS;
+        }
         Ball[] balls = new Ball[numBalls];
+
         for (int i = 0; i < numBalls; i++) {
             int size;
             if (!isDefault) {
@@ -38,9 +44,21 @@ public class MultipleBouncingBallsAnimation {
             // Clamp size to allowed range
             if (size < MIN_SIZE) {
                 size = MIN_SIZE;
+                if (!isMessageShown) {
+                    System.out.println(
+                            "Unacceptable size given (range is " + MIN_SIZE + "-" + MAX_SIZE
+                                    + "). Default implemented!");
+                    isMessageShown = true;
+                }
             }
             if (size > MAX_SIZE) {
                 size = MAX_SIZE;
+                if (!isMessageShown) {
+                    System.out.println(
+                            "Unacceptable size given (range is " + MIN_SIZE + "-" + MAX_SIZE
+                                    + "). Default implemented!");
+                    isMessageShown = true;
+                }
             }
             // Pick a random center so that the entire ball lies inside the screen
             double x = size + rand.nextDouble() * (WIDTH - 2 * size);

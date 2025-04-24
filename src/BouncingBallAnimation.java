@@ -25,7 +25,7 @@ public class BouncingBallAnimation {
     public static void main(String[] args) {
         // Handling not enough arguments given - Default - 1 Ball is created
         if (args.length != 4) {
-            System.out.print("Not enough arguments. Default implemented!");
+            System.out.print("4 arguments needed. Default implemented!");
             drawAnimation(new Point(20, 20), 5, 5);
         } else {
             Point p = new Point(Double.parseDouble(args[0]), Double.parseDouble(args[1]));
