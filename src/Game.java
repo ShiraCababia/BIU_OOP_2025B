@@ -2,6 +2,11 @@ import biuoop.DrawSurface;
 import java.awt.Color;
 import biuoop.Sleeper;
 
+/**
+ * The Game class is responsible for setting up and running
+ * the Arkanoid-style game. It manages game elements such as
+ * sprites, collidables, paddle, and the main game loop.
+ */
 public class Game {
 
     final int WIDTH = 800;
@@ -13,6 +18,10 @@ public class Game {
     private Paddle paddle; // Declare the paddle
     private Sleeper sleeper; // Declare the sleeper object
 
+    /**
+     * Constructs a new Game object, initializes GUI components,
+     * input handling, and game object containers.
+     */
     public Game() {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
@@ -21,15 +30,27 @@ public class Game {
         this.sleeper = new Sleeper(); // Instantiate the sleeper
     }
 
+    /**
+     * Adds a collidable object to the game environment.
+     *
+     * @param c the Collidable to add
+     */
     public void addCollidable(Collidable c) {
         environment.addCollidable(c);
     }
 
+    /**
+     * Adds a sprite object to the game.
+     *
+     * @param s the Sprite to add
+     */
     public void addSprite(Sprite s) {
         sprites.addSprite(s);
     }
 
-    // Initialize the game by creating and adding the ball, blocks, and paddle.
+    /**
+     * Initialize the game by creating and adding the ball, blocks, and paddle.
+     */
     public void initialize() {
         // מחבט
         Rectangle paddleRect = new Rectangle(new Point(350, 560), 150, 20);
@@ -77,7 +98,10 @@ public class Game {
         bottom.addToGame(this);
     }
 
-    // Run the game -- main game loop
+    /**
+     * Run the game -- main game loop.
+     * Handles frame rendering and updates sprites every frame.
+     */
     public void run() {
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
@@ -97,7 +121,11 @@ public class Game {
         }
     }
 
-    // Add the main method to run the game
+    /**
+     * The main method to launch and run the game.
+     *
+     * @param args command-line arguments (not used)
+     */
     public static void main(String[] args) {
         Game game = new Game();
         game.initialize(); // Initialize the game

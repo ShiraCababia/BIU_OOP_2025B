@@ -1,5 +1,9 @@
 import biuoop.DrawSurface;
 
+/**
+ * The Ball class represents a ball in the game, which can move,
+ * detect collisions, and draw itself on the screen.
+ */
 public class Ball implements Sprite {
 
     private Point centerP;
@@ -12,7 +16,14 @@ public class Ball implements Sprite {
     final int WIDTH = 800; // X
     final int HEIGHT = 600; // Y
 
-    // Constructor
+    /**
+     * Constructor.
+     * Initializes a ball at the given center point, with the specified radius and color.
+     *
+     * @param center the center point of the ball
+     * @param r      the radius of the ball
+     * @param color  the color of the ball
+     */
     public Ball(Point center, int r, java.awt.Color color) {
         this.centerP = center;
         this.size = r;
@@ -23,7 +34,14 @@ public class Ball implements Sprite {
         this.maxY = HEIGHT;
     }
 
-    // Constructor for given X,Y instead of Point-Object
+    /**
+     * Constructor for given x, y instead of Point-object.
+     *
+     * @param x     x-coordinate of center
+     * @param y     y-coordinate of center
+     * @param r     radius of the ball
+     * @param color color of the ball
+     */
     public Ball(double x, double y, int r, java.awt.Color color) {
         this.centerP = new Point(x, y);
         this.size = r;
@@ -34,45 +52,87 @@ public class Ball implements Sprite {
         this.maxY = HEIGHT;
     }
 
-    // Accessors
+    /**
+     * @return the x position of the ball's center as an integer
+     */
     public int getX() {
         return (int) this.centerP.getX();
     }
 
+    /**
+     * @return the y position of the ball's center as an integer
+     */
     public int getY() {
         return (int) this.centerP.getY();
     }
 
+    /**
+     * @return the radius of the ball
+     */
     public int getSize() {
         return this.size;
     }
 
+    /**
+     * @return the ball's color
+     */
     public java.awt.Color getColor() {
         return this.color;
     }
 
+    /**
+     * @return the velocity of the ball
+     */
     public Velocity getVelocity() {
         return this.velocity;
     }
 
+    /**
+     * Sets the game environment for the ball to interact with.
+     *
+     * @param environment the GameEnvironment instance
+     */
     public void setGameEnvironment(GameEnvironment environment) {
         this.environment = environment;
     }
 
+    /**
+     * Sets the velocity of the ball.
+     *
+     * @param v the new velocity
+     */
     public void setVelocity(Velocity v) {
         this.velocity = v;
     }
 
+    /**
+     * Sets the velocity of the ball using dx and dy values.
+     *
+     * @param dx the horizontal speed
+     * @param dy the vertical speed
+     */
     public void setVelocity(double dx, double dy) {
         this.velocity = new Velocity(dx, dy);
     }
 
-    // Method to draw the ball on the given DrawSurface
+    /**
+     * Method to draw the ball on the given DrawSurface.
+     *
+     * @param surface the drawing surface
+     */
     public void drawOn(DrawSurface surface) {
         surface.setColor(this.color);
         surface.fillCircle((int) this.centerP.getX(), (int) this.centerP.getY(), this.size);
     }
 
+    /**
+     * Sets the boundaries (frame) for the ball's movement.
+     *
+     * @param minX minimum x bound
+     * @param minY minimum y bound
+     * @param maxX maximum x bound
+     * @param maxY maximum y bound
+     */
     public void setFrame(double minX, double minY, double maxX, double maxY) {
         this.minX = minX;
         this.minY = minY;
@@ -80,7 +140,10 @@ public class Ball implements Sprite {
         this.maxY = maxY;
     }
 
-    // Advances the ball based on its velocity and checks for collisions
+    /**
+     * Advances the ball based on its velocity and checks for collisions
+     * with game elements and screen boundaries.
+     */
     public void moveOneStep() {
         if (velocity == null || environment == null) {
             return;
@@ -160,8 +223,10 @@ public class Ball implements Sprite {
         centerP = new Point(x, y);
     }
 
-    // Method for moving the ball with additional restrictions for the gray and
-    // yellow rectangles.
+    /**
+     * Method for moving the ball with additional restrictions
+     * for specific layout zones in the game.
+     */
     public void moveOneStepWhenLimited() {
         if (this.velocity != null) {
             double nextX = this.centerP.getX() + this.velocity.getDx();
@@ -242,12 +307,19 @@ public class Ball implements Sprite {
         }
     }
 
+    /**
+     * Called to notify that time has passed; moves the ball.
+     */
     public void timePassed() {
         moveOneStep();
     }
 
+    /**
+     * Adds the ball to the game as a sprite.
+     *
+     * @param g the Game instance
+     */
     public void addToGame(Game g) {
         g.addSprite(this);
     }
-
 }

@@ -1,9 +1,21 @@
 import biuoop.DrawSurface;
 
+/**
+ * The Sprite interface should be implemented by all game objects
+ * that can be drawn to the screen and updated as time progresses.
+ */
 public interface Sprite {
-    // draw the sprite to the screen
+
+    /**
+     * Draws the sprite on the given drawing surface.
+     *
+     * @param d the surface to draw the sprite on
+     */
     void drawOn(DrawSurface d);
 
-    // notify the sprite that time has passed
+    /**
+     * Notifies the sprite that a unit of time has passed.
+     * This method should update the sprite's state accordingly.
+     */
     void timePassed();
 }
