@@ -1,6 +1,6 @@
 import biuoop.DrawSurface;
 
-public class Ball {
+public class Ball implements Sprite {
 
     private Point centerP;
     private int size;
@@ -237,6 +237,12 @@ public class Ball {
         }
     }
 
-    //
+    public void timePassed() {
+        moveOneStep();
+    }
+
+    public void addToGame(Game g) {
+        g.addSprite(this);
+    }
 
 }
