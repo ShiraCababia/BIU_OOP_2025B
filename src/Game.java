@@ -1,59 +1,106 @@
-import biuoop.GUI;
 import biuoop.DrawSurface;
-import biuoop.Sleeper;
 import java.awt.Color;
+import biuoop.Sleeper;
 
 public class Game {
+
+    final int WIDTH = 800;
+    final int HEIGHT = 600;
     private SpriteCollection sprites;
     private GameEnvironment environment;
-    private GUI gui;
-    private Sleeper sleeper;
+    private biuoop.GUI gui;
+    private biuoop.KeyboardSensor keyboard;
+    private Paddle paddle; // Declare the paddle
+    private Sleeper sleeper; // Declare the sleeper object
 
     public Game() {
         this.sprites = new SpriteCollection();
         this.environment = new GameEnvironment();
-        this.gui = new GUI("Game", 800, 600);
-        this.sleeper = new Sleeper();
+        this.gui = new biuoop.GUI("Paddle Game", WIDTH, HEIGHT);
+        this.keyboard = gui.getKeyboardSensor();
+        this.sleeper = new Sleeper(); // Instantiate the sleeper
     }
 
     public void addCollidable(Collidable c) {
-        this.environment.addCollidable(c);
+        environment.addCollidable(c);
     }
 
     public void addSprite(Sprite s) {
-        this.sprites.addSprite(s);
+        sprites.addSprite(s);
     }
 
-    // Initialize a new game: create the Blocks and Ball (and Paddle)
-    // and add them to the game.
+    // Initialize the game by creating and adding the ball, blocks, and paddle.
     public void initialize() {
-        Ball ball = new Ball(new Point(400, 300), 10, Color.RED);
-        ball.setVelocity(new Velocity(3, 3));
-        ball.setGameEnvironment(this.environment);
-        ball.addToGame(this);
-        for (int i = 0; i < 5; i++) {
-           Block block = new Block(new Rectangle(new Point(100 + i * 60, 150), 50, 20));
-           block.addToGame(this);
-        }
-     }
+        // מחבט
+        Rectangle paddleRect = new Rectangle(new Point(350, 550), 150, 20);
+        paddle = new Paddle(paddleRect, Color.ORANGE, keyboard, 10, WIDTH);
+        paddle.addToGame(this);
 
-    // Run the game -- start the animation loop.
+        // כדור 1
+        Ball ball1 = new Ball(new Point(400, 500), 7, Color.BLACK);
+        ball1.setVelocity(Velocity.fromAngleAndSpeed(300, 5));
+        ball1.setGameEnvironment(this.environment);
+        ball1.addToGame(this);
+        Ball ball2 = new Ball(new Point(300, 450), 7, Color.BLACK);
+        ball2.setVelocity(Velocity.fromAngleAndSpeed(60, 5));
+        ball2.setGameEnvironment(this.environment);
+        ball2.addToGame(this);
+
+        // Block layout configuration
+        int blockWidth = 50;
+        int blockHeight = 20;
+        int startY = 100;
+        Color[] colors = { Color.GRAY, Color.RED, Color.ORANGE, Color.BLUE, Color.PINK, Color.GREEN };
+
+        for (int row = 0; row < colors.length; row++) {
+            Color color = colors[row];
+            int blocksInRow = 12 - row;
+            int y = startY + row * blockHeight;
+            int startX = WIDTH - 10 - blocksInRow * blockWidth;
+            for (int col = 0; col < blocksInRow; col++) {
+                int x = startX + col * blockWidth;
+                Rectangle rect = new Rectangle(new Point(x, y), blockWidth, blockHeight);
+                Block block = new Block(rect, color);
+                block.addToGame(this);
+            }
+        }
+
+        // גבולות המסך
+        int thickness = 20;
+        Block top = new Block(new Rectangle(new Point(0, 0), WIDTH, thickness), Color.GRAY);
+        Block left = new Block(new Rectangle(new Point(0, 0), thickness, HEIGHT), Color.GRAY);
+        Block right = new Block(new Rectangle(new Point(WIDTH - thickness, 0), thickness, HEIGHT), Color.GRAY);
+        Block bottom = new Block(new Rectangle(new Point(0, HEIGHT - thickness), WIDTH, thickness), Color.GRAY);
+        top.addToGame(this);
+        left.addToGame(this);
+        right.addToGame(this);
+        bottom.addToGame(this);
+    }
+
+    // Run the game -- main game loop
     public void run() {
-        // ...
         int framesPerSecond = 60;
         int millisecondsPerFrame = 1000 / framesPerSecond;
+
         while (true) {
             long startTime = System.currentTimeMillis(); // timing
             DrawSurface d = gui.getDrawSurface();
-            this.sprites.drawAllOn(d);
-            gui.show(d);
-            this.sprites.notifyAllTimePassed();
+            this.sprites.drawAllOn(d); // Draw all sprites on the screen
+            gui.show(d); // Display the surface
+            this.sprites.notifyAllTimePassed(); // Notify all sprites that time has passed
             // timing
             long usedTime = System.currentTimeMillis() - startTime;
             long milliSecondLeftToSleep = millisecondsPerFrame - usedTime;
             if (milliSecondLeftToSleep > 0) {
-                sleeper.sleepFor(milliSecondLeftToSleep);
+                sleeper.sleepFor(milliSecondLeftToSleep); // Add the sleep to ensure correct frame rate
             }
         }
+    }
+
+    // Add the main method to run the game
+    public static void main(String[] args) {
+        Game game = new Game();
+        game.initialize(); // Initialize the game
+        game.run(); // Start the game loop
     }
 }

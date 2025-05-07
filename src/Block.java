@@ -1,11 +1,18 @@
 import biuoop.DrawSurface;
+import java.awt.Color;
 
 public class Block implements Collidable, Sprite {
 
     private Rectangle rectangle;
+    private Color color = java.awt.Color.GRAY;
 
     public Block(Rectangle rectangle) {
         this.rectangle = rectangle;
+    }
+
+    public Block(Rectangle rectangle, Color color) {
+        this.rectangle = rectangle;
+        this.color = color;
     }
 
     public Rectangle getCollisionRectangle() {
@@ -41,17 +48,17 @@ public class Block implements Collidable, Sprite {
 
     // Method to draw the block on the given DrawSurface
     public void drawOn(DrawSurface surface) {
-        // Set color (you can customize the color)
-        surface.setColor(java.awt.Color.GRAY); // You can choose a different color if needed
-        // Fill the rectangle (draw it on the surface)
-        surface.fillRectangle((int) this.rectangle.getUpperLeft().getX(),
-                (int) this.rectangle.getUpperLeft().getY(),
-                (int) this.rectangle.getWidth(),
-                (int) this.rectangle.getHeight());
+        surface.setColor(this.color);
+        int x = (int) this.rectangle.getUpperLeft().getX();
+        int y = (int) this.rectangle.getUpperLeft().getY();
+        int width = (int) this.rectangle.getWidth();
+        int height = (int) this.rectangle.getHeight();
+        surface.fillRectangle(x, y, width, height);
+        surface.setColor(Color.BLACK);
+        surface.drawRectangle(x, y, width, height);
     }
 
     public void timePassed() {
-
     }
 
     public void addToGame(Game g) {

@@ -20,9 +20,9 @@
         <delete dir="bin" />
     </target>
 
-    <!-- <target name="run" depends="compile" >
+    <target name="run" depends="compile" >
         <java classname="Ass3Game" classpath="${classpath}" fork="true"/>
-    </target> -->
+    </target>
 
     <target name="runN" depends="compile" >
         <java classname="Main" classpath="${classpath}" fork="true"/>
