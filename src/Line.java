@@ -1,6 +1,8 @@
 
 import biuoop.DrawSurface;
 import java.awt.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Line {
 
@@ -174,5 +176,27 @@ public class Line {
         d.setColor(Color.BLACK);
         d.drawLine((int) start.getX(), (int) start.getY(),
                 (int) end.getX(), (int) end.getY());
+    }
+
+    // If this line does not intersect with the rectangle, return null.
+    // Otherwise, return the closest intersection point to the
+    // start of the line.
+    public Point closestIntersectionToStartOfLine(Rectangle rectangle) {
+        List<Point> intersectionPoints = rectangle.intersectionPoints(this);
+        if (intersectionPoints.isEmpty()) {
+            return null;
+        }
+
+        Point closestIntersection = intersectionPoints.get(0);
+        double minDistance = this.start.distance(closestIntersection);
+
+        for (Point p : intersectionPoints) {
+            double distance = this.start.distance(p);
+            if (distance < minDistance) {
+                closestIntersection = p;
+                minDistance = distance;
+            }
+        }
+        return closestIntersection;
     }
 }

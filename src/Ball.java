@@ -7,6 +7,7 @@ public class Ball {
     private java.awt.Color color;
     private Velocity velocity;
     private double minX, minY, maxX, maxY;
+    private GameEnvironment environment;
 
     final int WIDTH = 800; // X
     final int HEIGHT = 600; // Y
@@ -54,6 +55,10 @@ public class Ball {
         return this.velocity;
     }
 
+    public void setGameEnvironment(GameEnvironment environment) {
+        this.environment = environment;
+    }
+
     public void setVelocity(Velocity v) {
         this.velocity = v;
     }
@@ -76,35 +81,77 @@ public class Ball {
     }
 
     // Method to move the ball one step within the defined boundaries
+    /*
+     * public void moveOneStep() {
+     * if (this.velocity != null) {
+     * // Calculate the next position based on velocity
+     * double nextX = this.centerP.getX() + this.velocity.getDx();
+     * double nextY = this.centerP.getY() + this.velocity.getDy();
+     * // Check if the ball is out of bounds on the X-axis (left or right)
+     * if (nextX - size < minX || nextX + size > maxX) {
+     * this.velocity = new Velocity(-this.velocity.getDx(), this.velocity.getDy());
+     * // Adjust the X-coordinate to keep the ball inside the bounds
+     * if (nextX - size < minX) {
+     * nextX = size + minX;
+     * }
+     * if (nextX + size > maxX) {
+     * nextX = maxX - size;
+     * }
+     * }
+     * // Check if the ball is out of bounds on the Y-axis (top or bottom)
+     * if (nextY - size < minY || nextY + size > maxY) {
+     * this.velocity = new Velocity(this.velocity.getDx(), -this.velocity.getDy());
+     * // Adjust the Y-coordinate to keep the ball inside the bounds
+     * if (nextY - size < minY) {
+     * nextY = size + minY;
+     * }
+     * if (nextY + size > maxY) {
+     * nextY = maxY - size;
+     * }
+     * }
+     * // Update the ball's position to the new calculated position
+     * this.centerP = new Point(nextX, nextY);
+     * }
+     * }
+     */
+
     public void moveOneStep() {
-        if (this.velocity != null) {
-            // Calculate the next position based on velocity
-            double nextX = this.centerP.getX() + this.velocity.getDx();
-            double nextY = this.centerP.getY() + this.velocity.getDy();
-            // Check if the ball is out of bounds on the X-axis (left or right)
-            if (nextX - size < minX || nextX + size > maxX) {
-                this.velocity = new Velocity(-this.velocity.getDx(), this.velocity.getDy());
-                // Adjust the X-coordinate to keep the ball inside the bounds
-                if (nextX - size < minX) {
-                    nextX = size + minX;
-                }
-                if (nextX + size > maxX) {
-                    nextX = maxX - size;
-                }
-            }
-            // Check if the ball is out of bounds on the Y-axis (top or bottom)
-            if (nextY - size < minY || nextY + size > maxY) {
-                this.velocity = new Velocity(this.velocity.getDx(), -this.velocity.getDy());
-                // Adjust the Y-coordinate to keep the ball inside the bounds
-                if (nextY - size < minY) {
-                    nextY = size + minY;
-                }
-                if (nextY + size > maxY) {
-                    nextY = maxY - size;
-                }
-            }
-            // Update the ball's position to the new calculated position
-            this.centerP = new Point(nextX, nextY);
+        if (this.velocity == null) {
+            return;
+        }
+        double nextX = this.centerP.getX() + this.velocity.getDx();
+        double nextY = this.centerP.getY() + this.velocity.getDy();
+        int minX = size;
+        int maxX = WIDTH - size;
+        int minY = size;
+        int maxY = HEIGHT - size;
+        if (nextX < minX || nextX > maxX) {
+            this.velocity = new Velocity(-this.velocity.getDx(), this.velocity.getDy());
+        }
+        if (nextY < minY || nextY > maxY) {
+            this.velocity = new Velocity(this.velocity.getDx(), -this.velocity.getDy());
+        }
+
+        nextX = this.centerP.getX() + this.velocity.getDx();
+        nextY = this.centerP.getY() + this.velocity.getDy();
+        Point end = new Point(nextX, nextY);
+        Line trajectory = new Line(this.centerP, end);
+
+        CollisionInfo collisionInfo = environment.getClosestCollision(trajectory);
+
+        if (collisionInfo != null) {
+            Point collisionPoint = collisionInfo.collisionPoint();
+            Collidable collidedObject = collisionInfo.collisionObject();
+            double dx = this.velocity.getDx();
+            double dy = this.velocity.getDy();
+            double smallOffset = 0.1;
+            double newX = collisionPoint.getX() - dx * smallOffset;
+            double newY = collisionPoint.getY() - dy * smallOffset;
+
+            this.centerP = new Point(newX, newY);
+            this.velocity = collidedObject.hit(collisionPoint, this.velocity);
+        } else {
+            this.centerP = end;
         }
     }
 
@@ -189,5 +236,7 @@ public class Ball {
             this.centerP = new Point(nextX, nextY);
         }
     }
+
+    //
 
 }
