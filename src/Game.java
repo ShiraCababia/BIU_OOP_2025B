@@ -32,8 +32,8 @@ public class Game {
     // Initialize the game by creating and adding the ball, blocks, and paddle.
     public void initialize() {
         // מחבט
-        Rectangle paddleRect = new Rectangle(new Point(350, 550), 150, 20);
-        paddle = new Paddle(paddleRect, Color.ORANGE, keyboard, 10, WIDTH);
+        Rectangle paddleRect = new Rectangle(new Point(350, 560), 150, 20);
+        paddle = new Paddle(paddleRect, Color.ORANGE, keyboard, 5, WIDTH);
         paddle.addToGame(this);
 
         // כדור 1

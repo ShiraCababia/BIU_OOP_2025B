@@ -44,7 +44,7 @@ class Rectangle {
         Line leftLine = new Line(x, y, x, y + height);
         Line rightLine = new Line(x + width, y, x + width, y + height);
 
-        Line[] edges = {topLine, bottomLine, leftLine, rightLine};
+        Line[] edges = { topLine, bottomLine, leftLine, rightLine };
         for (Line edge : edges) {
             Point intersection = line.intersectionWith(edge);
             if (intersection != null) {
@@ -58,4 +58,13 @@ class Rectangle {
         d.setColor(Color.ORANGE);
         d.fillRectangle((int) upperLeft.getX(), (int) upperLeft.getY(), (int) width, (int) height);
     }
+
+    public boolean isInside(Point p) {
+        double x = p.getX();
+        double y = p.getY();
+        double rx = this.upperLeft.getX();
+        double ry = this.upperLeft.getY();
+        return (x >= rx && x <= rx + width && y >= ry && y <= ry + height);
+    }
+
 }

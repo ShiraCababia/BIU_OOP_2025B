@@ -80,79 +80,84 @@ public class Ball implements Sprite {
         this.maxY = maxY;
     }
 
-    // Method to move the ball one step within the defined boundaries
-    /*
-     * public void moveOneStep() {
-     * if (this.velocity != null) {
-     * // Calculate the next position based on velocity
-     * double nextX = this.centerP.getX() + this.velocity.getDx();
-     * double nextY = this.centerP.getY() + this.velocity.getDy();
-     * // Check if the ball is out of bounds on the X-axis (left or right)
-     * if (nextX - size < minX || nextX + size > maxX) {
-     * this.velocity = new Velocity(-this.velocity.getDx(), this.velocity.getDy());
-     * // Adjust the X-coordinate to keep the ball inside the bounds
-     * if (nextX - size < minX) {
-     * nextX = size + minX;
-     * }
-     * if (nextX + size > maxX) {
-     * nextX = maxX - size;
-     * }
-     * }
-     * // Check if the ball is out of bounds on the Y-axis (top or bottom)
-     * if (nextY - size < minY || nextY + size > maxY) {
-     * this.velocity = new Velocity(this.velocity.getDx(), -this.velocity.getDy());
-     * // Adjust the Y-coordinate to keep the ball inside the bounds
-     * if (nextY - size < minY) {
-     * nextY = size + minY;
-     * }
-     * if (nextY + size > maxY) {
-     * nextY = maxY - size;
-     * }
-     * }
-     * // Update the ball's position to the new calculated position
-     * this.centerP = new Point(nextX, nextY);
-     * }
-     * }
-     */
-
+    // Advances the ball based on its velocity and checks for collisions
     public void moveOneStep() {
-        if (this.velocity == null) {
+        if (velocity == null || environment == null) {
             return;
         }
-        double nextX = this.centerP.getX() + this.velocity.getDx();
-        double nextY = this.centerP.getY() + this.velocity.getDy();
-        int minX = size;
-        int maxX = WIDTH - size;
-        int minY = size;
-        int maxY = HEIGHT - size;
-        if (nextX < minX || nextX > maxX) {
-            this.velocity = new Velocity(-this.velocity.getDx(), this.velocity.getDy());
-        }
-        if (nextY < minY || nextY > maxY) {
-            this.velocity = new Velocity(this.velocity.getDx(), -this.velocity.getDy());
-        }
+        double dx = velocity.getDx();
+        double dy = velocity.getDy();
+        Point projected = new Point(centerP.getX() + dx, centerP.getY() + dy);
+        Line path = new Line(centerP, projected);
+        CollisionInfo impact = environment.getClosestCollision(path);
+        if (impact == null) {
+            // Check if the new position is overlapping any object (especially paddle)
+            for (Collidable item : environment.getCollidables()) {
+                Rectangle bounds = item.getCollisionRectangle();
+                if (bounds.isInside(projected)) {
+                    if (item instanceof Paddle) {
+                        // Ball hit the paddle, force it upward and place above
+                        velocity = new Velocity(dx, -Math.abs(dy));
+                        centerP = new Point(centerP.getX(), bounds.getUpperLeft().getY() - 1);
+                    } else {
+                        // Estimate direction of contact to reflect manually
+                        double leftGap = Math.abs(projected.getX() - bounds.getUpperLeft().getX());
+                        double rightGap = Math
+                                .abs(projected.getX() - (bounds.getUpperLeft().getX() + bounds.getWidth()));
+                        double topGap = Math.abs(projected.getY() - bounds.getUpperLeft().getY());
+                        double bottomGap = Math
+                                .abs(projected.getY() - (bounds.getUpperLeft().getY() + bounds.getHeight()));
 
-        nextX = this.centerP.getX() + this.velocity.getDx();
-        nextY = this.centerP.getY() + this.velocity.getDy();
-        Point end = new Point(nextX, nextY);
-        Line trajectory = new Line(this.centerP, end);
-
-        CollisionInfo collisionInfo = environment.getClosestCollision(trajectory);
-
-        if (collisionInfo != null) {
-            Point collisionPoint = collisionInfo.collisionPoint();
-            Collidable collidedObject = collisionInfo.collisionObject();
-            double dx = this.velocity.getDx();
-            double dy = this.velocity.getDy();
-            double smallOffset = 0.1;
-            double newX = collisionPoint.getX() - dx * smallOffset;
-            double newY = collisionPoint.getY() - dy * smallOffset;
-
-            this.centerP = new Point(newX, newY);
-            this.velocity = collidedObject.hit(collisionPoint, this.velocity);
+                        if (Math.min(leftGap, rightGap) < Math.min(topGap, bottomGap)) {
+                            dx = -dx;
+                        } else {
+                            dy = -dy;
+                        }
+                        velocity = new Velocity(dx, dy);
+                    }
+                    return;
+                }
+            }
+            // No collision found; proceed to move
+            centerP = projected;
         } else {
-            this.centerP = end;
+            // Collision occurred; adjust position slightly before impact
+            Point hitPoint = impact.collisionPoint();
+            Velocity updatedVelocity = impact.collisionObject().hit(hitPoint, velocity);
+            centerP = new Point(hitPoint.getX() - dx * 0.1, hitPoint.getY() - dy * 0.1);
+            velocity = updatedVelocity;
         }
+        // Safety net: if ball ends up inside a shape, reposition it outward
+        for (Collidable object : environment.getCollidables()) {
+            if (object.getCollisionRectangle().isInside(centerP)) {
+                double mag = Math.sqrt(dx * dx + dy * dy);
+                if (mag != 0) {
+                    double ux = dx / mag;
+                    double uy = dy / mag;
+                    centerP = new Point(centerP.getX() - ux * 2, centerP.getY() - uy * 2);
+                    velocity = new Velocity(-dx, -dy);
+                }
+                break;
+            }
+        }
+        // Ensure ball stays within screen bounds
+        double x = centerP.getX();
+        double y = centerP.getY();
+        if (x - size < 0) {
+            x = size;
+            velocity = new Velocity(Math.abs(velocity.getDx()), velocity.getDy());
+        } else if (x + size > WIDTH) {
+            x = WIDTH - size;
+            velocity = new Velocity(-Math.abs(velocity.getDx()), velocity.getDy());
+        }
+        if (y - size < 0) {
+            y = size;
+            velocity = new Velocity(velocity.getDx(), Math.abs(velocity.getDy()));
+        } else if (y + size > HEIGHT) {
+            y = HEIGHT - size;
+            velocity = new Velocity(velocity.getDx(), -Math.abs(velocity.getDy()));
+        }
+        centerP = new Point(x, y);
     }
 
     // Method for moving the ball with additional restrictions for the gray and

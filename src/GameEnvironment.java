@@ -40,4 +40,8 @@ public class GameEnvironment {
         return new CollisionInfo(closestPoint, closestObject);
     }
 
+    public List<Collidable> getCollidables() {
+        return this.collidables;
+    }
+
 }
