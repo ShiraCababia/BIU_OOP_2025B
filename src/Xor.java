@@ -57,8 +57,8 @@ public class Xor extends BinaryExpression {
      */
     @Override
     public Expression nandify() {
-        Expression firstExpr = left.nandify();
-        Expression secExpr = right.nandify();
+        Expression firstExpr = getLeft().nandify();
+        Expression secExpr = getRight().nandify();
         Expression nandAB = new Nand(firstExpr, secExpr);
         Expression part1 = new Nand(firstExpr, nandAB);
         Expression part2 = new Nand(secExpr, nandAB);
@@ -75,8 +75,8 @@ public class Xor extends BinaryExpression {
      */
     @Override
     public Expression norify() {
-        Expression firstExpr = left.norify();
-        Expression secExpr = right.norify();
+        Expression firstExpr = getLeft().norify();
+        Expression secExpr = getRight().norify();
         Expression part1 = new Nor(firstExpr, firstExpr);
         Expression part2 = new Nor(secExpr, secExpr);
         Expression part3 = new Nor(firstExpr, secExpr);

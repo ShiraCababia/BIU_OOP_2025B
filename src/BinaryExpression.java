@@ -1,4 +1,5 @@
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Abstract class representing a binary logical expression with two operands.
@@ -6,8 +7,8 @@ import java.util.*;
  * expressions.
  */
 public abstract class BinaryExpression extends BaseExpression {
-    protected final Expression left;
-    protected final Expression right;
+    private final Expression left;
+    private final Expression right;
 
     /**
      * Constructs a BinaryExpression with the given left and right sub-expressions.
@@ -25,7 +26,7 @@ public abstract class BinaryExpression extends BaseExpression {
      *
      * @return the left expression
      */
-    protected Expression getLeft() {
+    public Expression getLeft() {
         return left;
     }
 
@@ -34,7 +35,7 @@ public abstract class BinaryExpression extends BaseExpression {
      *
      * @return the right expression
      */
-    protected Expression getRight() {
+    public Expression getRight() {
         return right;
     }
 

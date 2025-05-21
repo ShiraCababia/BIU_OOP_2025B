@@ -59,27 +59,27 @@ public class Nand extends BinaryExpression {
      */
     @Override
     public Expression nandify() {
-        Expression A = left.nandify();
-        Expression B = right.nandify();
-        return new Nand(A, B); // stays the same
+        Expression firstExpr = getLeft().nandify();
+        Expression secExpr = getRight().nandify();
+        return new Nand(firstExpr, secExpr); // stays the same
     }
 
     /**
      * Converts this NAND expression into an equivalent expression using only NOR
      * operators.
-     *
      * Uses the formula:
-     * ( (A NOR A) NOR (B NOR B) ) NOR ( ( (A NOR A) NOR (B NOR B) ) NOR (A NOR B) )
-     *
+     * ( (firstExpr NOR firstExpr) NOR (secExpr NOR secExpr) )
+     * NOR ( ( (firstExpr NOR firstExpr) NOR (secExpr NOR secExpr) ) NOR
+     * (firstExpr NOR secExpr) )
      * @return NOR equivalent expression of this NAND expression
      */
     @Override
     public Expression norify() {
-        Expression A = left.norify();
-        Expression B = right.norify();
+        Expression firstExpr = getLeft().norify();
+        Expression secExpr = getRight().norify();
 
-        Expression part1 = new Nor(new Nor(A, A), new Nor(B, B));
-        Expression part2 = new Nor(A, B);
+        Expression part1 = new Nor(new Nor(firstExpr, firstExpr), new Nor(secExpr, secExpr));
+        Expression part2 = new Nor(firstExpr, secExpr);
         Expression inner = new Nor(part1, part2);
         return new Nor(part1, inner);
     }
@@ -89,7 +89,7 @@ public class Nand extends BinaryExpression {
      * - x A 1 = ~x
      * - x A 0 = 1
      * - x A x = ~x
-     * - Constant folding if both sides evaluate to constants
+     * - Constant folding if both sides evaluate to constants.
      *
      * @return simplified expression
      */

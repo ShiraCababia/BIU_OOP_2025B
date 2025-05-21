@@ -57,7 +57,7 @@ public class Not extends UnaryExpression {
      */
     @Override
     public Expression nandify() {
-        Expression nandExpr = expression.nandify();
+        Expression nandExpr = getExpression().nandify();
         return new Nand(nandExpr, nandExpr); // A NAND A is equivalent to NOT A
     }
 
@@ -69,7 +69,7 @@ public class Not extends UnaryExpression {
      */
     @Override
     public Expression norify() {
-        Expression norExpr = expression.norify();
+        Expression norExpr = getExpression().norify();
         return new Nor(norExpr, norExpr); // A NOR A is equivalent to NOT A
     }
 
@@ -98,11 +98,11 @@ public class Not extends UnaryExpression {
 
         // Double negation simplification (~~X = X)
         // This is a partial attempt since we can't use instanceof or downcasting:
-        if (simplifiedExpr.toString().startsWith("~(") && simplifiedExpr.toString().endsWith(")")) {
+        // if (simplifiedExpr.toString().startsWith("~(") && simplifiedExpr.toString().endsWith(")")) {
             // Ideally, we would unwrap the inner expression here.
             // Without instanceof, it's difficult, so skipping actual unwrap.
             // Could add an isNot() method in Expression interface if allowed.
-        }
+        // }
 
         return new Not(simplifiedExpr);
     }

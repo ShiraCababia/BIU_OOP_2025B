@@ -59,11 +59,12 @@ public class Nor extends BinaryExpression {
      */
     @Override
     public Expression nandify() {
-        Expression A = left.nandify();
-        Expression B = right.nandify();
+        Expression firstExpr = getLeft().nandify();
+        Expression secExpr = getRight().nandify();
 
-        // ( (A NAND A) NAND (B NAND B) ) NAND ( (A NAND A) NAND (B NAND B) )
-        Expression part1 = new Nand(new Nand(A, A), new Nand(B, B));
+        // ( (firstExpr NAND firstExpr) NAND (secExpr NAND secExpr) ) NAND ( (firstExpr
+        // NAND firstExpr) NAND (secExpr NAND secExpr) )
+        Expression part1 = new Nand(new Nand(firstExpr, firstExpr), new Nand(secExpr, secExpr));
         return new Nand(part1, part1);
     }
 
@@ -75,9 +76,9 @@ public class Nor extends BinaryExpression {
      */
     @Override
     public Expression norify() {
-        Expression A = left.norify();
-        Expression B = right.norify();
-        return new Nor(A, B); // remains the same
+        Expression firstExpr = getLeft().norify();
+        Expression secExpr = getRight().norify();
+        return new Nor(firstExpr, secExpr); // remains the same
     }
 
     /**
@@ -85,7 +86,7 @@ public class Nor extends BinaryExpression {
      * - x V 1 = 0
      * - x V 0 = ~x
      * - x V x = ~x
-     * - If both sides evaluate to constants, compute the result
+     * - If both sides evaluate to constants, compute the result.
      *
      * @return simplified expression
      */

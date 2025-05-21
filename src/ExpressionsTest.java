@@ -2,7 +2,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * A test class for demonstrating various logical expression operations,
+ * including construction, evaluation, assignment, simplification,
+ * nandification, and norification.
+ */
 public class ExpressionsTest {
+    /**
+     * Main method that runs multiple tests on logical expressions.
+     *
+     * @param args command-line arguments (not used)
+     * @throws Exception if evaluation fails due to unassigned variables
+     */
     public static void main(String[] args) throws Exception {
 
         Expression expr1 = new Xor(new And(new Var("x"), new Var("y")), new Val(true));
@@ -69,6 +80,5 @@ public class ExpressionsTest {
 
         System.out.println(" ");
         System.out.println("Checks the (NOT~) Why is it outside of the parentheses ?");
-
     }
 }

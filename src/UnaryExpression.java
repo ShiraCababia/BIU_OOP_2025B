@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.List;
 
 /**
  * Abstract class representing a unary logical expression with a single operand.
@@ -6,7 +6,7 @@ import java.util.*;
  * expressions.
  */
 public abstract class UnaryExpression extends BaseExpression {
-    protected final Expression expression;
+    private final Expression expression;
 
     /**
      * Constructs a UnaryExpression with the given sub-expression.

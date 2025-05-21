@@ -57,7 +57,7 @@ public class Xnor extends BinaryExpression {
      */
     @Override
     public Expression nandify() {
-        Expression xorNand = new Xor(left, right).nandify();
+        Expression xorNand = new Xor(getLeft(), getRight()).nandify();
         return new Nand(xorNand, xorNand); // (X XOR Y) NAND (X XOR Y)
     }
 
@@ -69,7 +69,7 @@ public class Xnor extends BinaryExpression {
      */
     @Override
     public Expression norify() {
-        Expression xorNor = new Xor(left, right).norify();
+        Expression xorNor = new Xor(getLeft(), getRight()).norify();
         return new Nor(xorNor, xorNor); // (X XOR Y) NOR (X XOR Y)
     }
 

@@ -59,8 +59,8 @@ public class Or extends BinaryExpression {
      */
     @Override
     public Expression nandify() {
-        Expression nandLeft = left.nandify();
-        Expression nandRight = right.nandify();
+        Expression nandLeft = getLeft().nandify();
+        Expression nandRight = getRight().nandify();
         return new Nand(new Nand(nandLeft, nandLeft), new Nand(nandRight, nandRight)); // (A NAND A) NAND (B NAND B)
     }
 
@@ -72,8 +72,8 @@ public class Or extends BinaryExpression {
      */
     @Override
     public Expression norify() {
-        Expression norLeft = left.norify();
-        Expression norRight = right.norify();
+        Expression norLeft = getLeft().norify();
+        Expression norRight = getRight().norify();
         Expression nor = new Nor(norLeft, norRight);
         return new Nor(nor, nor); // (A NOR B) NOR (A NOR B)
     }
@@ -83,9 +83,9 @@ public class Or extends BinaryExpression {
      * - x | 0 = x
      * - x | 1 = 1
      * - x | x = x
-     * - If both sides evaluate to constants, compute the result
+     * - If both sides evaluate to constants, compute the result.
      *
-     * @return simplified expression
+     * @return simplified expression.
      */
     @Override
     public Expression simplify() {
