@@ -22,17 +22,17 @@ public class ExpressionsTest {
         // Print the Norified version of the expression.
         // Print the simplified version of the expression.
 
-        Expression expr1 = new Xor(new And(new Var("x"), new Var("y")), new Val(true));
+        Expression expr1 = new Xor(new And(new Var("x"), new Var("y")), new Var("z"));
         System.out.println(expr1);
 
         Map<String, Boolean> assignment1 = new TreeMap<>();
         assignment1.put("x", true);
         assignment1.put("y", false);
+        assignment1.put("z", true);
         System.out.println(expr1.evaluate(assignment1));
 
         System.out.println(expr1.nandify());
         System.out.println(expr1.norify());
         System.out.println(expr1.simplify());
-
     }
 }

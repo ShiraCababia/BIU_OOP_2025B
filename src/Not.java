@@ -36,13 +36,9 @@ public class Not extends UnaryExpression {
     @Override
     public String toString() {
         String inner = getExpression().toString();
-
-        // Check if the inner expression already has parentheses wrapping it fully
         if (inner.startsWith("(") && inner.endsWith(")")) {
-            // Inner already parenthesized, just prepend '~' inside parentheses
             return "(~" + inner + ")";
         } else {
-            // Otherwise, add parentheses around inner expression
             return "(~(" + inner + "))";
         }
     }
@@ -104,12 +100,10 @@ public class Not extends UnaryExpression {
     @Override
     public Expression simplify() {
         Expression simplifiedExpr = getExpression().simplify();
-        // Constant folding
         try {
             return new Val(!simplifiedExpr.evaluate());
         } catch (Exception ignored) {
         }
-        // Double negation: if the simplified expression is a Not, unwrap it
         Expression inner = simplifiedExpr.getNegated();
         if (inner != null) {
             return inner.simplify();

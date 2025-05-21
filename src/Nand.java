@@ -77,7 +77,6 @@ public class Nand extends BinaryExpression {
     public Expression norify() {
         Expression firstExpr = getLeft().norify();
         Expression secExpr = getRight().norify();
-
         Expression part1 = new Nor(new Nor(firstExpr, firstExpr), new Nor(secExpr, secExpr));
         Expression part2 = new Nor(firstExpr, secExpr);
         Expression inner = new Nor(part1, part2);
@@ -97,20 +96,16 @@ public class Nand extends BinaryExpression {
     public Expression simplify() {
         Expression leftSimplified = getLeft().simplify();
         Expression rightSimplified = getRight().simplify();
-
         Boolean leftVal = null;
         Boolean rightVal = null;
-
         try {
             leftVal = leftSimplified.evaluate();
         } catch (Exception ignored) {
         }
-
         try {
             rightVal = rightSimplified.evaluate();
         } catch (Exception ignored) {
         }
-
         // x A 1 = ~x
         if (Boolean.TRUE.equals(rightVal)) {
             return new Not(leftSimplified).simplify();
@@ -130,7 +125,6 @@ public class Nand extends BinaryExpression {
         if (leftVal != null && rightVal != null) {
             return new Val(!(leftVal && rightVal));
         }
-
         return new Nand(leftSimplified, rightSimplified);
     }
 }

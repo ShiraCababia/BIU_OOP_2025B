@@ -61,9 +61,6 @@ public class Nor extends BinaryExpression {
     public Expression nandify() {
         Expression firstExpr = getLeft().nandify();
         Expression secExpr = getRight().nandify();
-
-        // ( (firstExpr NAND firstExpr) NAND (secExpr NAND secExpr) ) NAND ( (firstExpr
-        // NAND firstExpr) NAND (secExpr NAND secExpr) )
         Expression part1 = new Nand(new Nand(firstExpr, firstExpr), new Nand(secExpr, secExpr));
         return new Nand(part1, part1);
     }
@@ -94,20 +91,16 @@ public class Nor extends BinaryExpression {
     public Expression simplify() {
         Expression leftSimplified = getLeft().simplify();
         Expression rightSimplified = getRight().simplify();
-
         Boolean leftVal = null;
         Boolean rightVal = null;
-
         try {
             leftVal = leftSimplified.evaluate();
         } catch (Exception ignored) {
         }
-
         try {
             rightVal = rightSimplified.evaluate();
         } catch (Exception ignored) {
         }
-
         // x V 1 = 0
         if (Boolean.TRUE.equals(rightVal) || Boolean.TRUE.equals(leftVal)) {
             return new Val(false);
@@ -127,7 +120,6 @@ public class Nor extends BinaryExpression {
         if (leftVal != null && rightVal != null) {
             return new Val(!(leftVal || rightVal));
         }
-
         return new Nor(leftSimplified, rightSimplified);
     }
 }

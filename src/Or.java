@@ -91,20 +91,16 @@ public class Or extends BinaryExpression {
     public Expression simplify() {
         Expression leftSimplified = getLeft().simplify();
         Expression rightSimplified = getRight().simplify();
-
         Boolean leftVal = null;
         Boolean rightVal = null;
-
         try {
             leftVal = leftSimplified.evaluate();
         } catch (Exception ignored) {
         }
-
         try {
             rightVal = rightSimplified.evaluate();
         } catch (Exception ignored) {
         }
-
         // x | 0 = x
         if (Boolean.FALSE.equals(leftVal)) {
             return rightSimplified;
@@ -124,7 +120,6 @@ public class Or extends BinaryExpression {
         if (leftVal != null && rightVal != null) {
             return new Val(leftVal || rightVal);
         }
-
         return new Or(leftSimplified, rightSimplified);
     }
 }

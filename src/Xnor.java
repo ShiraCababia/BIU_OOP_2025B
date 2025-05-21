@@ -85,20 +85,16 @@ public class Xnor extends BinaryExpression {
     public Expression simplify() {
         Expression leftSimplified = getLeft().simplify();
         Expression rightSimplified = getRight().simplify();
-
         Boolean leftVal = null;
         Boolean rightVal = null;
-
         try {
             leftVal = leftSimplified.evaluate();
         } catch (Exception ignored) {
         }
-
         try {
             rightVal = rightSimplified.evaluate();
         } catch (Exception ignored) {
         }
-
         // x # x = 1
         if (leftSimplified.toString().equals(rightSimplified.toString())) {
             return new Val(true);
@@ -107,7 +103,6 @@ public class Xnor extends BinaryExpression {
         if (leftVal != null && rightVal != null) {
             return new Val(leftVal.equals(rightVal));
         }
-
         return new Xnor(leftSimplified, rightSimplified);
     }
 }

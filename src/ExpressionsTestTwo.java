@@ -13,7 +13,6 @@ public class ExpressionsTestTwo {
     public static void main(String[] args) throws Exception {
 
         Expression x = new Var("x");
-        Expression y = new Var("y");
 
         // 1. NOT(TRUE)
         Expression notTrue = new Not(new Val(true));

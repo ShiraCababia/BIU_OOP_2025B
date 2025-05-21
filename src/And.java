@@ -62,7 +62,6 @@ public class And extends BinaryExpression {
         Expression nandLeft = getLeft().nandify();
         Expression nandRight = getRight().nandify();
         Expression nand = new Nand(nandLeft, nandRight);
-        // (A NAND B) NAND (A NAND B) is equivalent to A AND B.
         return new Nand(nand, nand);
     }
 
@@ -92,20 +91,16 @@ public class And extends BinaryExpression {
     public Expression simplify() {
         Expression leftSimplified = getLeft().simplify();
         Expression rightSimplified = getRight().simplify();
-
         Boolean leftVal = null;
         Boolean rightVal = null;
-
         try {
             leftVal = leftSimplified.evaluate();
         } catch (Exception ignored) {
         }
-
         try {
             rightVal = rightSimplified.evaluate();
         } catch (Exception ignored) {
         }
-
         // x & 1 = x
         if (Boolean.TRUE.equals(leftVal)) {
             return rightSimplified;
@@ -125,7 +120,6 @@ public class And extends BinaryExpression {
         if (leftVal != null && rightVal != null) {
             return new Val(leftVal && rightVal);
         }
-
         return new And(leftSimplified, rightSimplified);
     }
 }

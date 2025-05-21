@@ -62,8 +62,6 @@ public class Xor extends BinaryExpression {
         Expression nandAB = new Nand(firstExpr, secExpr);
         Expression part1 = new Nand(firstExpr, nandAB);
         Expression part2 = new Nand(secExpr, nandAB);
-        // (firstExpr NAND (firstExpr NAND secExpr)) NAND (secExpr NAND (firstExpr NAND
-        // secExpr))
         return new Nand(part1, part2);
     }
 
@@ -80,8 +78,6 @@ public class Xor extends BinaryExpression {
         Expression part1 = new Nor(firstExpr, firstExpr);
         Expression part2 = new Nor(secExpr, secExpr);
         Expression part3 = new Nor(firstExpr, secExpr);
-        // ((firstExpr NOR firstExpr) NOR (secExpr NOR secExpr)) NOR (firstExpr NOR
-        // secExpr)
         return new Nor(new Nor(part1, part2), part3);
     }
 
@@ -99,20 +95,16 @@ public class Xor extends BinaryExpression {
     public Expression simplify() {
         Expression leftSimplified = getLeft().simplify();
         Expression rightSimplified = getRight().simplify();
-
         Boolean leftVal = null;
         Boolean rightVal = null;
-
         try {
             leftVal = leftSimplified.evaluate();
         } catch (Exception ignored) {
         }
-
         try {
             rightVal = rightSimplified.evaluate();
         } catch (Exception ignored) {
         }
-
         // x ^ 0 = x
         if (Boolean.FALSE.equals(rightVal)) {
             return leftSimplified;
@@ -135,7 +127,6 @@ public class Xor extends BinaryExpression {
         if (leftVal != null && rightVal != null) {
             return new Val(leftVal ^ rightVal);
         }
-
         return new Xor(leftSimplified, rightSimplified);
     }
 }

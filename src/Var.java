@@ -28,7 +28,7 @@ public class Var implements Expression {
     @Override
     public Boolean evaluate(Map<String, Boolean> assignment) throws Exception {
         if (!assignment.containsKey(name)) {
-            throw new Exception("Variable '" + name + "' not found in expression.");
+            throw new Exception("Variable '" + name + "' not found in assignment.");
         }
         return assignment.get(name);
     }
@@ -43,7 +43,7 @@ public class Var implements Expression {
      */
     @Override
     public Boolean evaluate() throws Exception {
-        throw new Exception("Cannot evaluate variable '" + name + "' without expression.");
+        throw new Exception("Cannot evaluate variable '" + name + "' without assignment.");
     }
 
     /**
