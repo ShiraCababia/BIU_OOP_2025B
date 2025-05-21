@@ -20,6 +20,17 @@
         <delete dir="bin"/>
     </target>
 
+    <target name="run1" depends="compile" >
+        <java classname="ExpressionsTestOne" classpath="${classpath}" fork="true"/>
+    </target>
+
+    <target name="run2" depends="compile" >
+        <java classname="ExpressionsTestTwo" classpath="${classpath}" fork="true"/>
+    </target>
+
+    <target name="run3" depends="compile" >
+        <java classname="ExpressionsTestThree" classpath="${classpath}" fork="true"/>
+    </target>
 
     <target name="run" depends="compile" >
         <java classname="ExpressionsTest" classpath="${classpath}" fork="true"/>

@@ -62,4 +62,13 @@ public interface Expression {
      * @return the simplified expression
      */
     Expression simplify();
+
+    /**
+     * Returns the inner expression if this is a NOT expression.
+     * Otherwise, returns null.
+     * @return the inner expression if this is a Not expression; null otherwise
+     */
+    default Expression getNegated() {
+        return null;
+    }
 }

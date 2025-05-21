@@ -59,8 +59,8 @@ public class And extends BinaryExpression {
      */
     @Override
     public Expression nandify() {
-        Expression nandLeft = left.nandify();
-        Expression nandRight = right.nandify();
+        Expression nandLeft = getLeft().nandify();
+        Expression nandRight = getRight().nandify();
         Expression nand = new Nand(nandLeft, nandRight);
         // (A NAND B) NAND (A NAND B) is equivalent to A AND B.
         return new Nand(nand, nand);
@@ -74,8 +74,8 @@ public class And extends BinaryExpression {
      */
     @Override
     public Expression norify() {
-        Expression norLeft = left.norify();
-        Expression norRight = right.norify();
+        Expression norLeft = getLeft().norify();
+        Expression norRight = getRight().norify();
         return new Nor(new Nor(norLeft, norLeft), new Nor(norRight, norRight)); // (A NOR A) NOR (B NOR B)
     }
 

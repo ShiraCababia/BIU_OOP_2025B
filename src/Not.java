@@ -35,7 +35,16 @@ public class Not extends UnaryExpression {
      */
     @Override
     public String toString() {
-        return "~(" + getExpression().toString() + ")";
+        String inner = getExpression().toString();
+
+        // Check if the inner expression already has parentheses wrapping it fully
+        if (inner.startsWith("(") && inner.endsWith(")")) {
+            // Inner already parenthesized, just prepend '~' inside parentheses
+            return "(~" + inner + ")";
+        } else {
+            // Otherwise, add parentheses around inner expression
+            return "(~(" + inner + "))";
+        }
     }
 
     /**
@@ -74,36 +83,37 @@ public class Not extends UnaryExpression {
     }
 
     /**
-     * Simplifies this NOT expression.
-     * If the inner expression can be evaluated to a boolean value, returns the
-     * negated constant.
-     * Handles double negation by returning the simplified inner expression inside a
-     * double NOT.
+     * Overrides the default implementation to return the expression
+     * being negated (i.e., the inner expression).
      *
-     * @return simplified expression
+     * @return the inner expression of this Not
+     */
+    @Override
+    public Expression getNegated() {
+        return getExpression();
+    }
+
+    /**
+     * Simplifies this NOT expression by:
+     * - Returning the negated constant if inner expression evaluates to a boolean.
+     * - Removing double negations by unwrapping nested NOT expressions.
+     * - Otherwise, returning a NOT expression with the simplified inner expression.
+     *
+     * @return the simplified expression
      */
     @Override
     public Expression simplify() {
         Expression simplifiedExpr = getExpression().simplify();
-
-        Boolean val = null;
+        // Constant folding
         try {
-            val = simplifiedExpr.evaluate();
+            return new Val(!simplifiedExpr.evaluate());
         } catch (Exception ignored) {
         }
-
-        if (val != null) {
-            return new Val(!val);
+        // Double negation: if the simplified expression is a Not, unwrap it
+        Expression inner = simplifiedExpr.getNegated();
+        if (inner != null) {
+            return inner.simplify();
         }
-
-        // Double negation simplification (~~X = X)
-        // This is a partial attempt since we can't use instanceof or downcasting:
-        // if (simplifiedExpr.toString().startsWith("~(") && simplifiedExpr.toString().endsWith(")")) {
-            // Ideally, we would unwrap the inner expression here.
-            // Without instanceof, it's difficult, so skipping actual unwrap.
-            // Could add an isNot() method in Expression interface if allowed.
-        // }
-
         return new Not(simplifiedExpr);
     }
 }
