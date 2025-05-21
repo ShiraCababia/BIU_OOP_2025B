@@ -1,25 +1,62 @@
 import java.util.Map;
 
+/**
+ * Represents a logical NOR operation between two expressions.
+ * Extends the BinaryExpression abstract class.
+ */
 public class Nor extends BinaryExpression {
+
+    /**
+     * Constructs a Nor expression with the given left and right sub-expressions.
+     *
+     * @param left  the left sub-expression
+     * @param right the right sub-expression
+     */
     public Nor(Expression left, Expression right) {
         super(left, right);
     }
 
+    /**
+     * Evaluates the NOR expression given a variable assignment map.
+     *
+     * @param assignment a map from variable names to boolean values
+     * @return the boolean result of NOR operation on left and right
+     * @throws Exception if either sub-expression contains a variable not in the
+     *                   assignment
+     */
     @Override
     public Boolean evaluate(Map<String, Boolean> assignment) throws Exception {
         return !(getLeft().evaluate(assignment) || getRight().evaluate(assignment));
     }
 
+    /**
+     * Returns a string representation of the NOR expression.
+     *
+     * @return string in the format "(left V right)"
+     */
     @Override
     public String toString() {
         return "(" + getLeft().toString() + " V " + getRight().toString() + ")";
     }
 
+    /**
+     * Creates a new Nor expression with the given left and right sub-expressions.
+     *
+     * @param left  the left sub-expression
+     * @param right the right sub-expression
+     * @return a new Nor instance
+     */
     @Override
     protected Expression create(Expression left, Expression right) {
         return new Nor(left, right);
     }
 
+    /**
+     * Converts this NOR expression into an equivalent expression using only NAND
+     * operators.
+     *
+     * @return NAND equivalent expression of this NOR expression
+     */
     @Override
     public Expression nandify() {
         Expression A = left.nandify();
@@ -30,13 +67,28 @@ public class Nor extends BinaryExpression {
         return new Nand(part1, part1);
     }
 
+    /**
+     * Converts this NOR expression into an equivalent expression using only NOR
+     * operators.
+     *
+     * @return NOR equivalent expression of this NOR expression (itself)
+     */
     @Override
     public Expression norify() {
         Expression A = left.norify();
         Expression B = right.norify();
-        return new Nor(A, B); // stays the same
+        return new Nor(A, B); // remains the same
     }
 
+    /**
+     * Simplifies this NOR expression by applying boolean algebra rules:
+     * - x V 1 = 0
+     * - x V 0 = ~x
+     * - x V x = ~x
+     * - If both sides evaluate to constants, compute the result
+     *
+     * @return simplified expression
+     */
     @Override
     public Expression simplify() {
         Expression leftSimplified = getLeft().simplify();
@@ -70,7 +122,7 @@ public class Nor extends BinaryExpression {
         if (leftSimplified.toString().equals(rightSimplified.toString())) {
             return new Not(leftSimplified).simplify();
         }
-        // constant folding
+        // constant folding for NOR
         if (leftVal != null && rightVal != null) {
             return new Val(!(leftVal || rightVal));
         }
